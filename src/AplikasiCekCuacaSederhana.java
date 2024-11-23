@@ -1,8 +1,9 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -15,6 +16,24 @@ public class AplikasiCekCuacaSederhana extends javax.swing.JFrame {
      */
     public AplikasiCekCuacaSederhana() {
         initComponents();
+        
+        DefaultTableModel model = (DefaultTableModel) tblDataCuaca.getModel();
+    model.setColumnIdentifiers(new Object[]{"Kota", "Cuaca", "Suhu"});
+
+    // Muat kota favorit dari file
+    try {
+        java.io.File file = new java.io.File("DataCuaca/kotaFavorit.txt");
+        if (file.exists()) {
+            BufferedReader reader = new BufferedReader(new FileReader(file));
+            String line;
+            while ((line = reader.readLine()) != null) {
+                cmbPilihKota.addItem(line); // Tambahkan kota ke ComboBox
+            }
+            reader.close();
+        }
+    } catch (IOException e) {
+        JOptionPane.showMessageDialog(this, "Gagal memuat daftar kota favorit: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+    }
     }
 
     /**
@@ -39,9 +58,10 @@ public class AplikasiCekCuacaSederhana extends javax.swing.JFrame {
         btnCekCuaca = new javax.swing.JButton();
         btnSimpan = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tblDataCuaca = new javax.swing.JTable();
         jLabel5 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
+        btnMuatData = new javax.swing.JButton();
+        btnPinKota = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -57,7 +77,7 @@ public class AplikasiCekCuacaSederhana extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(48, 48, 48)
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(55, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -70,7 +90,6 @@ public class AplikasiCekCuacaSederhana extends javax.swing.JFrame {
 
         jLabel3.setText("Cari Nama Kota");
 
-        cmbPilihKota.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         cmbPilihKota.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cmbPilihKotaActionPerformed(evt);
@@ -90,10 +109,20 @@ public class AplikasiCekCuacaSederhana extends javax.swing.JFrame {
         jLabel4.setText("Informasi Cuaca dan Suhu");
 
         btnCekCuaca.setText("Cek Cuaca");
+        btnCekCuaca.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCekCuacaActionPerformed(evt);
+            }
+        });
 
         btnSimpan.setText("Simpan");
+        btnSimpan.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSimpanActionPerformed(evt);
+            }
+        });
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tblDataCuaca.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -104,42 +133,56 @@ public class AplikasiCekCuacaSederhana extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(tblDataCuaca);
 
         jLabel5.setText("Tabel Data Cuaca");
 
-        jButton1.setText("Tampilkan Data");
+        btnMuatData.setText("Tampilkan Data");
+        btnMuatData.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnMuatDataActionPerformed(evt);
+            }
+        });
+
+        btnPinKota.setText("Pin Kota");
+        btnPinKota.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPinKotaActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(jLabel5)
+                .addGap(88, 88, 88))
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addContainerGap()
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnPinKota, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jLabel4)
-                            .addComponent(btnCekCuaca, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                    .addComponent(lblSuhu, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(lblCuaca, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.LEADING))
-                                .addGap(18, 18, 18)
-                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(txtCariNamaKota)
-                                    .addComponent(cmbPilihKota, 0, 150, Short.MAX_VALUE)))
-                            .addComponent(btnSimpan, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(97, 97, 97)
-                        .addComponent(jLabel5))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(jLabel4)
+                                .addComponent(btnCekCuaca, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGroup(jPanel2Layout.createSequentialGroup()
+                                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                        .addComponent(lblSuhu, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(lblCuaca, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.LEADING))
+                                    .addGap(18, 18, 18)
+                                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                        .addComponent(txtCariNamaKota)
+                                        .addComponent(cmbPilihKota, 0, 150, Short.MAX_VALUE)))
+                                .addComponent(btnSimpan, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                            .addComponent(btnMuatData, javax.swing.GroupLayout.PREFERRED_SIZE, 257, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -152,23 +195,25 @@ public class AplikasiCekCuacaSederhana extends javax.swing.JFrame {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel3)
                     .addComponent(txtCariNamaKota, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(18, 18, 18)
                 .addComponent(btnCekCuaca, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(47, 47, 47)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnPinKota, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel4)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(lblCuaca)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(lblSuhu)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnSimpan, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(btnSimpan, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
                 .addComponent(jLabel5)
-                .addGap(4, 4, 4)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 252, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(29, Short.MAX_VALUE))
+                .addComponent(btnMuatData, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(28, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -188,7 +233,8 @@ public class AplikasiCekCuacaSederhana extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -201,6 +247,128 @@ public class AplikasiCekCuacaSederhana extends javax.swing.JFrame {
     private void txtCariNamaKotaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCariNamaKotaActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtCariNamaKotaActionPerformed
+
+    private void btnMuatDataActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMuatDataActionPerformed
+    try {
+        // Tentukan jalur folder dan file
+        String folderPath = "DataCuaca"; // Nama folder
+        String filePath = folderPath + "/dataCuaca.csv"; // File di dalam folder
+
+        // Periksa apakah folder dan file ada
+        java.io.File file = new java.io.File(filePath);
+        if (!file.exists()) {
+            JOptionPane.showMessageDialog(this, "File dataCuaca.csv tidak ditemukan di folder " + folderPath, "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        // Baca file
+        BufferedReader reader = new BufferedReader(new FileReader(filePath));
+        DefaultTableModel model = (DefaultTableModel) tblDataCuaca.getModel();
+        model.setRowCount(0); // Hapus semua baris sebelumnya
+        String line;
+        while ((line = reader.readLine()) != null) {
+            String[] data = line.split(",");
+            model.addRow(data); // Tambahkan data ke tabel
+        }
+        reader.close();
+
+        JOptionPane.showMessageDialog(this, "Data berhasil dimuat dari folder " + folderPath + "!");
+    } catch (IOException e) {
+        JOptionPane.showMessageDialog(this, "Gagal membaca file data cuaca: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+    }    // TODO add your handling code here:
+    }//GEN-LAST:event_btnMuatDataActionPerformed
+
+    private void btnCekCuacaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCekCuacaActionPerformed
+    String kota = txtCariNamaKota.getText();
+    if (kota.isEmpty()) {
+        JOptionPane.showMessageDialog(this, "Masukkan nama kota terlebih dahulu!", "Error", JOptionPane.ERROR_MESSAGE);
+        return;
+    }
+
+    // Array cuaca dan rentang suhu yang sesuai
+    String[] cuacaArray = {"Cerah", "Hujan", "Berawan", "Gerimis", "Badai"};
+    java.util.Random random = new java.util.Random();
+
+    String cuacaRandom = cuacaArray[random.nextInt(cuacaArray.length)];
+    String suhuRandom;
+
+    // Tentukan rentang suhu berdasarkan cuaca
+    switch (cuacaRandom) {
+        case "Cerah":
+            suhuRandom = (30 + random.nextInt(11)) + "°C"; // 30°C - 40°C
+            break;
+        case "Hujan":
+            suhuRandom = (5 + random.nextInt(6)) + "°C"; // 5°C - 10°C
+            break;
+        case "Berawan":
+            suhuRandom = (20 + random.nextInt(6)) + "°C"; // 20°C - 25°C
+            break;
+        case "Gerimis":
+            suhuRandom = (15 + random.nextInt(6)) + "°C"; // 15°C - 20°C
+            break;
+        case "Badai":
+            suhuRandom = (10 + random.nextInt(6)) + "°C"; // 10°C - 15°C
+            break;
+        default:
+            suhuRandom = "N/A"; // Default, seharusnya tidak tercapai
+    }
+
+    // Set nilai pada label
+    lblCuaca.setText("Cuaca : " + cuacaRandom);
+    lblSuhu.setText("Suhu : " + suhuRandom);
+
+    JOptionPane.showMessageDialog(this, "Cuaca berhasil diperbarui untuk kota: " + kota);        // TODO add your handling code here:
+    }//GEN-LAST:event_btnCekCuacaActionPerformed
+
+    private void btnSimpanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSimpanActionPerformed
+    try {
+        // Tentukan jalur folder dan file
+        String folderPath = "DataCuaca"; // Nama folder
+        String filePath = folderPath + "/dataCuaca.csv"; // File di dalam folder
+
+        // Buat folder jika belum ada
+        java.io.File folder = new java.io.File(folderPath);
+        if (!folder.exists()) {
+            folder.mkdir(); // Buat folder
+        }
+
+        // Tulis data ke file
+        try (FileWriter writer = new FileWriter(filePath, true)) { // 'true' untuk append
+            writer.append(txtCariNamaKota.getText() + "," + lblCuaca.getText() + "," + lblSuhu.getText() + "\n");
+            JOptionPane.showMessageDialog(this, "Data cuaca berhasil disimpan ke folder " + folderPath + "!");
+        }
+    } catch (IOException e) {
+        JOptionPane.showMessageDialog(this, "Gagal menyimpan data: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+    }    // TODO add your handling code here:
+    }//GEN-LAST:event_btnSimpanActionPerformed
+
+    private void btnPinKotaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPinKotaActionPerformed
+    String kota = txtCariNamaKota.getText();
+    if (kota.isEmpty()) {
+        JOptionPane.showMessageDialog(this, "Nama kota tidak boleh kosong!", "Error", JOptionPane.ERROR_MESSAGE);
+    } else {
+        boolean isExist = false;
+        for (int i = 0; i < cmbPilihKota.getItemCount(); i++) {
+            if (cmbPilihKota.getItemAt(i).equalsIgnoreCase(kota)) {
+                isExist = true;
+                break;
+            }
+        }
+        if (!isExist) {
+            cmbPilihKota.addItem(kota);
+            JOptionPane.showMessageDialog(this, "Kota berhasil ditambahkan ke daftar favorit!");
+
+            // Simpan kota ke file
+            try (FileWriter writer = new FileWriter("DataCuaca/kotaFavorit.txt", true)) { // 'true' untuk append
+                writer.append(kota + "\n");
+            } catch (IOException e) {
+                JOptionPane.showMessageDialog(this, "Gagal menyimpan kota ke file: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "Kota sudah ada di daftar favorit!", "Info", JOptionPane.INFORMATION_MESSAGE);
+        }
+    }    // TODO add your handling code here:
+    }//GEN-LAST:event_btnPinKotaActionPerformed
 
     /**
      * @param args the command line arguments
@@ -239,9 +407,10 @@ public class AplikasiCekCuacaSederhana extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCekCuaca;
+    private javax.swing.JButton btnMuatData;
+    private javax.swing.JButton btnPinKota;
     private javax.swing.JButton btnSimpan;
     private javax.swing.JComboBox<String> cmbPilihKota;
-    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -250,9 +419,9 @@ public class AplikasiCekCuacaSederhana extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
     private javax.swing.JLabel lblCuaca;
     private javax.swing.JLabel lblSuhu;
+    private javax.swing.JTable tblDataCuaca;
     private javax.swing.JTextField txtCariNamaKota;
     // End of variables declaration//GEN-END:variables
 }
